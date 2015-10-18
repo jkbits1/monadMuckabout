@@ -129,10 +129,18 @@ main2 currentRow = do
                     -- createRowIO2 '0' blankRowIO
                     newRow <- createRowIO3 (head line) currentRow -- blankRow
                     -- newRowIO <- return newRow
-                    main2 newRow
-                    -- return newRow
+                    if checkForWin newRow
+                        then return("You win!")
+                        else main2 newRow
+                        -- return newRow
             
 -- main2 blankRow
+
+checkForWin :: [Char] -> Bool
+checkForWin cs = 
+    let testChar = 'X' in
+        head cs == testChar && (head $ drop 1 cs) == testChar 
+        && (head $ drop 2 cs) == testChar
 
 -- mainRow :: IO ()            
 -- mainRow = do   line <- getLine
