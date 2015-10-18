@@ -116,17 +116,21 @@ createRowIO3 move cs = let cs2 = processMove move cs in
                         putChar (head cs2) >> 
                         putChar (head $ drop 1 cs2) >> 
                         putChar (head $ drop 2 cs2) >> 
+                        putStrLn "" >>
                         return cs2
 
 -- main2 :: IO [Char] -> IO [Char]                        
 main2 :: [Char] -> IO [Char]                        
 main2 currentRow = do
             line <- getLine
-            -- createRowIO2 '0' blankRowIO
-            newRow <- createRowIO3 (head line) currentRow -- blankRow
-            -- newRowIO <- return newRow
-            main2 newRow
-            -- return newRow
+            if null line 
+                then return("bye")
+                else do                
+                    -- createRowIO2 '0' blankRowIO
+                    newRow <- createRowIO3 (head line) currentRow -- blankRow
+                    -- newRowIO <- return newRow
+                    main2 newRow
+                    -- return newRow
             
 -- main2 blankRow
 
