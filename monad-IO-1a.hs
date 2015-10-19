@@ -126,13 +126,10 @@ main2 currentRow = do
             if null line 
                 then return("bye")
                 else do                
-                    -- createRowIO2 '0' blankRowIO
-                    newRow <- createRowIO3 (head line) currentRow -- blankRow
-                    -- newRowIO <- return newRow
+                    newRow <- createRowIO3 (head line) currentRow
                     if checkForWin newRow
                         then return("You win!")
                         else main2 newRow
-                        -- return newRow
             
 -- main2 blankRow
 
@@ -142,15 +139,7 @@ checkForWin cs =
         head cs == testChar && (head $ drop 1 cs) == testChar 
         && (head $ drop 2 cs) == testChar
 
--- mainRow :: IO ()            
--- mainRow = do   line <- getLine
-            -- if null line
-                -- then return ()
-                -- else do
-                    -- putBoard $ head line
-                    -- main
             
-
 -- put row            
 -- get input
 -- if someinput print changed row 
