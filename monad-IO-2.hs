@@ -182,7 +182,9 @@ gameLoop board =
 main4 :: Board -> IO Board
 main4 board = do
     showBoard (cells board)
-    gameLoop board
+    newBoard <- gameLoop board
+    putStrLn (cells newBoard)
+    return newBoard
                     
 -- main2 blankRow
 
