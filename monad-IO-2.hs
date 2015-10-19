@@ -121,19 +121,30 @@ createRowIO3 move cs = let cs2 = processMove move cs in
                         
 data Board = Board {
     rowCount :: Int,
-    cells :: [Char]
+    cells :: [Char],
+    message :: [Char]
 }          
 
 oneRowBoard = Board { 
     rowCount = 1, 
-    cells = "___" 
+    cells = "___",
+    message = ""
 }              
 
 createBoard :: [Char] -> Board            
 createBoard cs = 
     Board {
         rowCount = 1,
-        cells = cs 
+        cells = cs,
+        message = ""
+    }
+
+createBoardMessage :: Board -> [Char] -> Board            
+createBoardMessage board message = 
+    Board {
+        rowCount = (rowCount board),
+        cells = (cells board),
+        message = message
     }
 
 processBoardMove :: Char -> Board -> Board                                
@@ -149,7 +160,7 @@ processBoard :: Char -> Board -> IO Board
 processBoard move board = 
     let row = cells board in
         let cs = processMove move row in
-                        showBoard cs >>
+                        -- showBoard cs >>
                         return (createBoard cs)
                         
 showBoard :: [Char] -> IO ()                        
@@ -165,27 +176,28 @@ gameLoop board =
     do
         line <- getLine
         if null line 
-            then return(createBoard "bye")
+            then return(createBoardMessage board "bye")
             else do                
                 newBoard <- processBoard (head line) board
+                showBoard (cells newBoard)
                 if checkBoardForWin newBoard
-                    then return (createBoard "You win!")
+                    then return (createBoardMessage newBoard "You win!")
                     else gameLoop newBoard
 
 play :: Board -> IO ()
 play board = do
     showBoard (cells board)
     newBoard <- gameLoop board
-    putStrLn (cells newBoard)
+    putStrLn (message newBoard)
                     
 -- play oneRowBoard
 -- main2 blankRow
 
-checkForWin :: [Char] -> Bool
-checkForWin cs = 
-    let testChar = 'X' in
-        head cs == testChar && (head $ drop 1 cs) == testChar 
-        && (head $ drop 2 cs) == testChar
+-- checkForWin :: [Char] -> Bool
+-- checkForWin cs = 
+    -- let testChar = 'X' in
+        -- head cs == testChar && (head $ drop 1 cs) == testChar 
+        -- && (head $ drop 2 cs) == testChar
 
 checkBoardForWin :: Board -> Bool
 checkBoardForWin board = 
