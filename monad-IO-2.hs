@@ -149,10 +149,6 @@ processRow :: Char -> Board -> IO Board
 processRow move board = 
     let row = cells board in
         let cs = processMove move row in
-                        -- putChar (head cs) >> 
-                        -- putChar (head $ drop 1 cs) >> 
-                        -- putChar (head $ drop 2 cs) >> 
-                        -- putStrLn "" >>
                         showBoard cs >>
                         return (createBoard cs)
                         
@@ -179,13 +175,15 @@ gameLoop board =
                     then return(createBoard "You win!")
                     else gameLoop (createBoard newRow)
 
-main4 :: Board -> IO Board
-main4 board = do
+-- play :: Board -> IO Board
+play :: Board -> IO ()
+play board = do
     showBoard (cells board)
     newBoard <- gameLoop board
     putStrLn (cells newBoard)
-    return newBoard
+    -- return newBoard
                     
+-- play oneRowBoard
 -- main2 blankRow
 
 checkForWin :: [Char] -> Bool
