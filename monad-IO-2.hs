@@ -145,8 +145,8 @@ processBoardMove move board =
             then createBoard ((head row): 'X': (drop 2 row))
             else createBoard ((take 2 row) ++ ['X'])
 
-processRow :: Char -> Board -> IO Board
-processRow move board = 
+processBoard :: Char -> Board -> IO Board
+processBoard move board = 
     let row = cells board in
         let cs = processMove move row in
                         showBoard cs >>
@@ -160,32 +160,23 @@ showBoard cs =
                         putStrLn "" 
                         
 -- main2 :: IO [Char] -> IO [Char]                        
--- main3 :: Board -> IO Board                        
--- main3 board = 
 gameLoop :: Board -> IO Board                        
 gameLoop board = 
-    let currentRow = cells board in
     do
         line <- getLine
         if null line 
             then return(createBoard "bye")
             else do                
-                -- newRow <- createRowIO3 (head line) currentRow
-                newBoard <- processRow (head line) board
-                -- if checkForWin (newRow)
-                -- if checkForWin (cells newBoard)
+                newBoard <- processBoard (head line) board
                 if checkBoardForWin newBoard
                     then return (createBoard "You win!")
-                    -- else gameLoop (createBoard newRow)
                     else gameLoop newBoard
 
--- play :: Board -> IO Board
 play :: Board -> IO ()
 play board = do
     showBoard (cells board)
     newBoard <- gameLoop board
     putStrLn (cells newBoard)
-    -- return newBoard
                     
 -- play oneRowBoard
 -- main2 blankRow
