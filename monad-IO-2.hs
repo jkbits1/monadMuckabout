@@ -170,10 +170,14 @@ gameLoop board =
         if null line 
             then return(createBoard "bye")
             else do                
-                newRow <- createRowIO3 (head line) currentRow
-                if checkForWin newRow
-                    then return(createBoard "You win!")
-                    else gameLoop (createBoard newRow)
+                -- newRow <- createRowIO3 (head line) currentRow
+                newBoard <- processRow (head line) board
+                -- if checkForWin (newRow)
+                -- if checkForWin (cells newBoard)
+                if checkBoardForWin newBoard
+                    then return (createBoard "You win!")
+                    -- else gameLoop (createBoard newRow)
+                    else gameLoop newBoard
 
 -- play :: Board -> IO Board
 play :: Board -> IO ()
@@ -192,6 +196,12 @@ checkForWin cs =
         head cs == testChar && (head $ drop 1 cs) == testChar 
         && (head $ drop 2 cs) == testChar
 
+checkBoardForWin :: Board -> Bool
+checkBoardForWin board = 
+    let cs = cells board in
+    let testChar = 'X' in
+        head cs == testChar && (head $ drop 1 cs) == testChar 
+        && (head $ drop 2 cs) == testChar
             
 -- put row            
 -- get input
