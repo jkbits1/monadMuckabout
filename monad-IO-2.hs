@@ -92,12 +92,15 @@ createRowIO move iocs = iocs >>=
 -- createRowIO '1' blankRowIO
 
 processMove :: Char -> [Char] -> [Char]                                
-processMove move cs =
-    if move == '0'
-        then 'X': (drop 1 cs)
-        else if move == '1'
-            then (head cs): 'X': (drop 2 cs)
-            else (take 2 cs) ++ ['X']
+processMove move cs 
+    | move == '0'   = 'X': (drop 1 cs)
+    | move == '1'   = (head cs): 'X': (drop 2 cs)
+    | otherwise     = (take 2 cs) ++ ['X']
+    -- if move == '0'
+        -- then 'X': (drop 1 cs)
+        -- else if move == '1'
+            -- then (head cs): 'X': (drop 2 cs)
+            -- else (take 2 cs) ++ ['X']
 
 -- processMove '0' ['_', '_', '_']        
 -- processMove '1' ['_', '_', '_']        
@@ -149,9 +152,6 @@ createBoardMessage board message =
 
 processBoardMove :: Char -> Board -> Board                                
 processBoardMove move board
--- processBoardMove '0' board  = createBoard ('X': (drop 1 row))
--- processBoardMove '1' board  = createBoard ((head row): 'X': (drop 2 row))
--- processBoardMove _ board    = createBoard ((take 2 row) ++ ['X'])
     | move == '0' = createBoard ('X': (drop 1 row))
     | move == '1' = createBoard ((head row): 'X': (drop 2 row))
     | otherwise = createBoard ((take 2 row) ++ ['X'])
