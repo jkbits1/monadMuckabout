@@ -150,8 +150,8 @@ newMoveBoard board cs =
         message = (message board)
     }
 
-createBoardMessage :: Board -> [Char] -> Board            
-createBoardMessage board message = 
+newMessageBoard :: Board -> [Char] -> Board            
+newMessageBoard board message = 
     Board {
         rowCount = (rowCount board),
         cells = (cells board),
@@ -168,11 +168,14 @@ processBoardMove move board
 processBoard :: Char -> Board -> IO Board
 processBoard move board = return (processBoardMove move board)
                         
-showBoard :: [Char] -> IO ()                        
-showBoard cs = putChar (head cs) >> 
-               putChar (head $ drop 1 cs) >> 
-               putChar (head $ drop 2 cs) >> 
-               putStrLn "" 
+-- showBoard :: [Char] -> IO ()                        
+-- showBoard cs = putChar (head cs) >> 
+showBoard :: Board -> IO ()                        
+showBoard board = putChar (head cs) >> 
+                    putChar (head $ drop 1 cs) >> 
+                    putChar (head $ drop 2 cs) >> 
+                    putStrLn "" 
+                    where cs = cells board
                         
 -- main2 :: IO [Char] -> IO [Char]                        
 gameLoop :: Board -> IO Board                        
@@ -181,25 +184,25 @@ gameLoop board =
         line <- getLine
         -- case line of 
         if null line 
-            then return(createBoardMessage board "bye")
+            then return(newMessageBoard board "bye")
             else do                
                  newBoard <- processBoard (head line) board
-                 showBoard (cells newBoard)
-                 if checkBoardForWin newBoard
-                    then return (createBoardMessage newBoard "You win!")
+                 showBoard newBoard
+                 if checkForWin newBoard
+                    then return (newMessageBoard newBoard "You win!")
                     else gameLoop newBoard
 
 play :: Board -> IO ()
 play board = do
-    showBoard (cells board)
+    showBoard board
     finalBoard <- gameLoop board
     putStrLn (message finalBoard)
                     
 -- play oneRowBoard
 -- main2 blankRow
 
-checkBoardForWin :: Board -> Bool
-checkBoardForWin board = 
+checkForWin :: Board -> Bool
+checkForWin board = 
     let cs = cells board in
     let testChar = 'X' in
         head cs == testChar 
