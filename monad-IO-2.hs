@@ -141,6 +141,14 @@ createBoard cs =
         cells = cs,
         message = ""
     }
+    
+boardWithNewMove :: Board -> [Char] -> Board
+boardWithNewMove board cs = 
+    Board {
+        rowCount = (rowCount board),
+        cells = cs,
+        message = (message board)
+    }
 
 createBoardMessage :: Board -> [Char] -> Board            
 createBoardMessage board message = 
@@ -152,9 +160,9 @@ createBoardMessage board message =
 
 processBoardMove :: Char -> Board -> Board                                
 processBoardMove move board
-    | move == '0' = createBoard ('X': (drop 1 row))
-    | move == '1' = createBoard ((head row): 'X': (drop 2 row))
-    | otherwise = createBoard ((take 2 row) ++ ['X'])
+    | move == '0'   = boardWithNewMove board ('X': (drop 1 row))
+    | move == '1'   = boardWithNewMove board ((head row): 'X': (drop 2 row))
+    | otherwise     = boardWithNewMove board ((take 2 row) ++ ['X'])
     where row = cells board 
     -- let row = cells board in
     -- if move == '0'
@@ -165,11 +173,10 @@ processBoardMove move board
          
 
 processBoard :: Char -> Board -> IO Board
-processBoard move board = 
-    let row = cells board in
-        let cs = processMove move row in
-                        -- showBoard cs >>
-                        return (createBoard cs)
+processBoard move board = return (processBoardMove move board)
+    -- let row = cells board in
+        -- let cs = processMove move row in
+                        -- return (createBoard cs)
                         
 showBoard :: [Char] -> IO ()                        
 showBoard cs = 
