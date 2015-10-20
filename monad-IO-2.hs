@@ -148,13 +148,21 @@ createBoardMessage board message =
     }
 
 processBoardMove :: Char -> Board -> Board                                
-processBoardMove move board =
-    let row = cells board in
-    if move == '0'
-        then createBoard ('X': (drop 1 row))
-        else if move == '1'
-            then createBoard ((head row): 'X': (drop 2 row))
-            else createBoard ((take 2 row) ++ ['X'])
+processBoardMove move board
+-- processBoardMove '0' board  = createBoard ('X': (drop 1 row))
+-- processBoardMove '1' board  = createBoard ((head row): 'X': (drop 2 row))
+-- processBoardMove _ board    = createBoard ((take 2 row) ++ ['X'])
+    | move == '0' = createBoard ('X': (drop 1 row))
+    | move == '1' = createBoard ((head row): 'X': (drop 2 row))
+    | otherwise = createBoard ((take 2 row) ++ ['X'])
+    where row = cells board 
+    -- let row = cells board in
+    -- if move == '0'
+        -- then createBoard ('X': (drop 1 row))
+        -- else if move == '1'
+            -- then createBoard ((head row): 'X': (drop 2 row))
+            -- else createBoard ((take 2 row) ++ ['X'])
+         
 
 processBoard :: Char -> Board -> IO Board
 processBoard move board = 
