@@ -91,11 +91,11 @@ createRowIO move iocs = iocs >>=
 -- createRowIO '0' blankRowIO
 -- createRowIO '1' blankRowIO
 
-processMove :: Char -> [Char] -> [Char]                                
-processMove move cs 
-    | move == '0'   = 'X': (drop 1 cs)
-    | move == '1'   = (head cs): 'X': (drop 2 cs)
-    | otherwise     = (take 2 cs) ++ ['X']
+-- processMove :: Char -> [Char] -> [Char]                                
+-- processMove move cs 
+    -- | move == '0'   = 'X': (drop 1 cs)
+    -- | move == '1'   = (head cs): 'X': (drop 2 cs)
+    -- | otherwise     = (take 2 cs) ++ ['X']
     -- if move == '0'
         -- then 'X': (drop 1 cs)
         -- else if move == '1'
@@ -106,21 +106,21 @@ processMove move cs
 -- processMove '1' ['_', '_', '_']        
 -- processMove '2' ['_', '_', '_']        
 
-createRowIO2 :: Char -> IO [Char] -> IO [Char]
-createRowIO2 move iocs = iocs >>= 
-            (\cs -> let cs2 = processMove move cs in
-                        putChar (head cs2) >> 
-                        putChar (head $ drop 1 cs2) >> 
-                        putChar (head $ drop 2 cs2) >> 
-                        return cs2)
+-- createRowIO2 :: Char -> IO [Char] -> IO [Char]
+-- createRowIO2 move iocs = iocs >>= 
+            -- (\cs -> let cs2 = processMove move cs in
+                        -- putChar (head cs2) >> 
+                        -- putChar (head $ drop 1 cs2) >> 
+                        -- putChar (head $ drop 2 cs2) >> 
+                        -- return cs2)
 
-createRowIO3 :: Char -> [Char] -> IO [Char]
-createRowIO3 move cs = let cs2 = processMove move cs in
-                        putChar (head cs2) >> 
-                        putChar (head $ drop 1 cs2) >> 
-                        putChar (head $ drop 2 cs2) >> 
-                        putStrLn "" >>
-                        return cs2
+-- createRowIO3 :: Char -> [Char] -> IO [Char]
+-- createRowIO3 move cs = let cs2 = processMove move cs in
+                        -- putChar (head cs2) >> 
+                        -- putChar (head $ drop 1 cs2) >> 
+                        -- putChar (head $ drop 2 cs2) >> 
+                        -- putStrLn "" >>
+                        -- return cs2
                         
 data Board = Board {
     rowCount :: Int,
@@ -164,19 +164,9 @@ processBoardMove move board
     | move == '1'   = boardWithNewMove board ((head row): 'X': (drop 2 row))
     | otherwise     = boardWithNewMove board ((take 2 row) ++ ['X'])
     where row = cells board 
-    -- let row = cells board in
-    -- if move == '0'
-        -- then createBoard ('X': (drop 1 row))
-        -- else if move == '1'
-            -- then createBoard ((head row): 'X': (drop 2 row))
-            -- else createBoard ((take 2 row) ++ ['X'])
          
-
 processBoard :: Char -> Board -> IO Board
 processBoard move board = return (processBoardMove move board)
-    -- let row = cells board in
-        -- let cs = processMove move row in
-                        -- return (createBoard cs)
                         
 showBoard :: [Char] -> IO ()                        
 showBoard cs = 
@@ -190,29 +180,24 @@ gameLoop :: Board -> IO Board
 gameLoop board = 
     do
         line <- getLine
+        -- case line of 
         if null line 
             then return(createBoardMessage board "bye")
             else do                
-                newBoard <- processBoard (head line) board
-                showBoard (cells newBoard)
-                if checkBoardForWin newBoard
+                 newBoard <- processBoard (head line) board
+                 showBoard (cells newBoard)
+                 if checkBoardForWin newBoard
                     then return (createBoardMessage newBoard "You win!")
                     else gameLoop newBoard
 
 play :: Board -> IO ()
 play board = do
     showBoard (cells board)
-    newBoard <- gameLoop board
-    putStrLn (message newBoard)
+    finalBoard <- gameLoop board
+    putStrLn (message finalBoard)
                     
 -- play oneRowBoard
 -- main2 blankRow
-
--- checkForWin :: [Char] -> Bool
--- checkForWin cs = 
-    -- let testChar = 'X' in
-        -- head cs == testChar && (head $ drop 1 cs) == testChar 
-        -- && (head $ drop 2 cs) == testChar
 
 checkBoardForWin :: Board -> Bool
 checkBoardForWin board = 
@@ -221,6 +206,12 @@ checkBoardForWin board =
         head cs == testChar && (head $ drop 1 cs) == testChar 
         && (head $ drop 2 cs) == testChar
             
+-- checkForWin :: [Char] -> Bool
+-- checkForWin cs = 
+    -- let testChar = 'X' in
+        -- head cs == testChar && (head $ drop 1 cs) == testChar 
+        -- && (head $ drop 2 cs) == testChar
+
 -- put row            
 -- get input
 -- if someinput print changed row 
